@@ -1,9 +1,14 @@
 var express = require('express')
 var router = express.Router()
-const { getUser, getUserFriends, addRemoveFriend } = require("./controller")
+const { getUser, editProfile, getFriends, addRemoveFriend } = require("./controller")
+const { isLoginUser } = require("../middleware/auth")
 
-router.get('/:id', getUser)
-router.get("/:id/friends", getUserFriends)
-router.patch("/:id/:friendId", addRemoveFriend)
+const multer = require("multer")
+const upload = multer({ dest: '/public/uploads/profile' })
+
+router.get('/:id', isLoginUser, getUser)
+router.put('/:id/edit', isLoginUser, upload.single("profilePath"), editProfile)
+router.get("/:id/friends", isLoginUser, getFriends)
+router.patch("/:id/:friendId", isLoginUser, addRemoveFriend)
 
 module.exports = router;

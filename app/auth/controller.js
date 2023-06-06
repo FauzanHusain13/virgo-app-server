@@ -6,7 +6,7 @@ const { jwtkey } = require("../../config")
 module.exports = {
     register: async(req, res) => {
         try {
-            const { username, email, password, picturePath, friends, location, occupation } = req.body;
+            const { username, email, password, profilePath, friends, location, occupation } = req.body;
 
             // cek duplikat email
             const existingUser = await User.findOne({ email });
@@ -18,7 +18,7 @@ module.exports = {
                 username,
                 email, 
                 password, 
-                picturePath, 
+                profilePath, 
                 friends, 
                 location, 
                 occupation,

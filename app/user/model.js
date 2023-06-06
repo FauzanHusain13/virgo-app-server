@@ -21,9 +21,8 @@ let userSchema = new mongoose.Schema({
         require: true,
         min: 5,
     },
-    picturePath: {
+    profilePath: {
         type: String,
-        default: "",
     },
     friends: {
         type: Array,
