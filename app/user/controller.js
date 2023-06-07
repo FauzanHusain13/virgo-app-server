@@ -1,3 +1,5 @@
+const fs = require("fs")
+const path = require("path")
 const User = require("./model")
 const { rootPath } = require("../../config")
 
@@ -12,9 +14,10 @@ module.exports = {
             res.status(500).json({ message: err.message || "Internal Server Error" })
         }
     },
-    editProfile: async(req, res) => {
+    editProfile: async(req, res, next) => {
         try {
-            const { username = "", location = "" } =  req.body;
+            const { id } = req.params
+            const { username = "", location = "" } = req.body
             const payload = {}
 
             if(username.length) payload.username = username
@@ -24,7 +27,7 @@ module.exports = {
                 let tmp_path = req.file.path;
                 let originalExt = req.file.originalname.split(".")[req.file.originalname.split(".").length - 1];
                 let filename = req.file.filename + "." + originalExt;
-                let target_path = path.resolve(config.rootPath, `public/uploads/profile/${filename}`);
+                let target_path = path.resolve(rootPath, `public/uploads/profile/${filename}`);
 
                 const src = fs.createReadStream(tmp_path);
                 const dest = fs.createWriteStream(target_path);
@@ -48,7 +51,7 @@ module.exports = {
                     res.status(201).json({
                         data: {
                             id: user.id,
-                            username: user.name,
+                            username: user.username,
                             location: user.location,
                             profilePath: user.profilePath
                         }
