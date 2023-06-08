@@ -7,6 +7,7 @@ const postSchema = mongoose.Schema({
     },
     picturePath: {
         type: String,
+        require: true
     },
     description: {
         type: String,
@@ -15,7 +16,7 @@ const postSchema = mongoose.Schema({
         type: Map,
         of: Boolean
     },
-    comment: {
+    comments: {
         type: Array,
         default: []
     }

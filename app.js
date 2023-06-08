@@ -8,6 +8,7 @@ const methodOverride = require('method-override');
 // konfigurasi api
 const authRouter = require("./app/auth/router")
 const userRouter = require("./app/user/router")
+const postRouter = require("./app/post/router")
 
 const app = express();
 const URL = "/api/v1";
@@ -24,8 +25,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // api
-app.use(`${URL}/users`, userRouter)
 app.use(`${URL}/auth`, authRouter)
+app.use(`${URL}/users`, userRouter)
+app.use(`${URL}/post`, postRouter)
 
 app.use(function(req, res, next) {
   next(createError(404));

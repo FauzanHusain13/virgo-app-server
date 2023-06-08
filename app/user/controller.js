@@ -17,11 +17,12 @@ module.exports = {
     editProfile: async(req, res, next) => {
         try {
             const { id } = req.params
-            const { username = "", location = "" } = req.body
+            const { username = "", location = "", occupation = "" } = req.body
             const payload = {}
 
             if(username.length) payload.username = username
             if(location.length) payload.location = location
+            if(occupation.length) payload.occupation = occupation
 
             if(req.file) {
                 let tmp_path = req.file.path;
@@ -53,6 +54,7 @@ module.exports = {
                             id: user.id,
                             username: user.username,
                             location: user.location,
+                            occupation: user.occupation,
                             profilePath: user.profilePath
                         }
                     })
@@ -71,6 +73,7 @@ module.exports = {
                         id: user.id,
                         username: user.username,
                         location: user.location,
+                        occupation: user.occupation,
                         profilePath: user.profilePath
                     }
                 })
