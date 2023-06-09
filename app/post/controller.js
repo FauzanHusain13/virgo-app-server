@@ -85,6 +85,10 @@ module.exports = {
 
             const post = await Post.findById(id)
             const isLiked = post.likes.get(req.user._id)
+
+            if (!post) {
+                return res.status(404).json({ message: "Post not found" })
+            }
     
             if(isLiked) {
                 post.likes.delete(req.user._id)
@@ -101,6 +105,29 @@ module.exports = {
             )
     
             res.status(200).json(updatedPost)  
+        } catch (err) {
+            res.status(409).json({ message: err.message })
+        }
+    },
+    commentPost: async(req, res) => {
+        try {
+            const { id } = req.params
+            const { comment } = req.body
+        
+            const post = await Post.findById(id)
+        
+            if (!post) {
+              return res.status(404).json({ message: "Post not found" })
+            }
+        
+            post.comments.push({
+                comment: comment,
+                user: req.user._id
+            })
+        
+            const updatedPost = await post.save()
+        
+            res.status(200).json(updatedPost)
         } catch (err) {
             res.status(409).json({ message: err.message })
         }
