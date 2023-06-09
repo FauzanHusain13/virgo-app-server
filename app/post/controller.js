@@ -81,7 +81,26 @@ module.exports = {
     },
     likePost: async(req, res) => {
         try {
-            
+            const { id } = req.params
+
+            const post = await Post.findById(id)
+            const isLiked = post.likes.get(req.user._id)
+    
+            if(isLiked) {
+                post.likes.delete(req.user._id)
+            } else {
+                post.likes.set(req.user._id, true)
+            }
+    
+            const updatedPost = await Post.findByIdAndUpdate(
+                id,
+                { 
+                    likes: post.likes 
+                },
+                { new: true }
+            )
+    
+            res.status(200).json(updatedPost)  
         } catch (err) {
             res.status(409).json({ message: err.message })
         }
