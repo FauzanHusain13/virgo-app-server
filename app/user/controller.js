@@ -16,7 +16,6 @@ module.exports = {
     },
     editProfile: async(req, res, next) => {
         try {
-            const { id } = req.params
             const { username = "", location = "", occupation = "" } = req.body
             const payload = {}
 
