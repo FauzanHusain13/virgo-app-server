@@ -10,7 +10,7 @@ router.get("/", isLoginUser, getFeedPosts)
 router.post('/create', isLoginUser, upload.single("picturePath"), createPost)
 router.get('/:id/posts', isLoginUser, getUserPost)
 router.patch('/:id/like', isLoginUser, likePost)
-router.post('/:id/addComment', isLoginUser, commentPost)
-router.delete('/:id/deleteComment', isLoginUser, commentDelete)
+router.post('/:id/comment', isLoginUser, commentPost)
+router.delete('/:id/comment', isLoginUser, commentDelete)
 
 module.exports = router;
