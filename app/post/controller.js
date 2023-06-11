@@ -121,6 +121,7 @@ module.exports = {
             }
         
             post.comments.push({
+                _id: Math.random(8),
                 comment: comment,
                 user: req.user._id
             })
@@ -131,5 +132,37 @@ module.exports = {
         } catch (err) {
             res.status(409).json({ message: err.message })
         }
-    }
+    },
+    commentDelete: async (req, res) => {
+        try {
+          const { id } = req.params;
+          const { commentId } = req.body;
+      
+          const post = await Post.findById(id);
+      
+          if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+          }
+      
+          const commentIndex = post.comments.findIndex(
+            (comment) => comment._id.toString() === commentId
+          );
+      
+          if (commentIndex === -1) {
+            return res.status(404).json({ message: "Comment not found" });
+          }
+      
+          if (req.user._id.toString() !== post.comments[commentIndex].user.toString()) {
+            return res.status(400).json({ message: "You are not authorized to delete this comment" });
+          }
+      
+          post.comments.splice(commentIndex, 1); // Menghapus komentar dari array
+      
+          const updatedPost = await post.save();
+      
+          res.status(200).json(updatedPost);
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      },
 }
