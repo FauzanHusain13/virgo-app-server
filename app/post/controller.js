@@ -64,7 +64,8 @@ module.exports = {
             const { id } = req.params
 
             const post = await Post.findOne({
-                _id: id
+                _id: id,
+                user: req.user._id
             });
             
             if (!post) {
