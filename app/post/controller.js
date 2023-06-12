@@ -28,7 +28,7 @@ module.exports = {
                             description, 
                             picturePath: filename,
                             likes: {},
-                            comments: {}
+                            comments: []
                         })
 
                         await post.save();
@@ -44,7 +44,6 @@ module.exports = {
                                 fields: err.errors
                             })
                         }
-                        next(err)
                     }
                 })
             } else {
@@ -58,7 +57,35 @@ module.exports = {
                     fields: err.errors
                 })
             }
-            next(err)
+        }
+    },
+    deletePost: async(req, res) => {
+        try {
+            const { id } = req.params
+
+            const post = await Post.findOne({
+                _id: id
+            });
+            
+            if (!post) {
+                return res.status(404).json({ message: "Postingan tidak ditemukan" });
+            }
+            
+            await Post.findOneAndRemove({
+                _id: id
+            });
+
+            let currentImage = `${rootPath}/public/uploads/post/${post.picturePath}`;
+            
+            if(fs.existsSync(currentImage)){
+                fs.unlinkSync(currentImage)
+            }
+
+            res.status(200).json({
+                data: "Berhasil hapus postingan"
+            })
+        } catch (err) {
+            res.status(409).json({ message: err.message })
         }
     },
     getFeedPosts: async(req, res) => {
@@ -133,7 +160,7 @@ module.exports = {
             res.status(409).json({ message: err.message })
         }
     },
-    commentDelete: async (req, res) => {
+    commentDelete: async(req, res) => {
         try {
           const { id } = req.params;
           const { commentId } = req.body;
