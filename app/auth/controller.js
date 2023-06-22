@@ -26,7 +26,7 @@ module.exports = {
                 impression: Math.floor(Math.random() * 10000),
             })
             const savedUser = await newUser.save()
-            res.status(201).json(savedUser)
+            res.status(201).json({ data: savedUser })
         } catch (err) {
             res.status(500).json({ error: err.message })
         }
@@ -68,7 +68,6 @@ module.exports = {
             res.status(500).json({
                 message: err.message || `Internal server error`
             })
-            next()
         })
     }
 }

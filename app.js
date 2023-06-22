@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const methodOverride = require('method-override');
+const cors = require("cors")
 
 // konfigurasi api
 const authRouter = require("./app/auth/router")
@@ -11,6 +12,7 @@ const userRouter = require("./app/user/router")
 const postRouter = require("./app/post/router")
 
 const app = express();
+app.use(cors())
 const URL = "/api/v1";
 
 // view engine setup

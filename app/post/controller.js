@@ -92,7 +92,7 @@ module.exports = {
     getFeedPosts: async(req, res) => {
         try {
             const post = await Post.find()
-            res.status(200).json(post)
+            res.status(200).json({ data: post })
         } catch (err) {
             res.status(409).json({ message: err.message }) 
         }
@@ -102,7 +102,7 @@ module.exports = {
             const { userId } = req.params
             const post = await Post.find({ userId })
 
-            res.status(200).json(post)
+            res.status(200).json({ data: post })
         } catch (err) {
             res.status(409).json({ message: err.message })
         }
@@ -132,7 +132,7 @@ module.exports = {
                 { new: true }
             )
     
-            res.status(200).json(updatedPost)  
+            res.status(200).json({ data: updatedPost })  
         } catch (err) {
             res.status(409).json({ message: err.message })
         }
@@ -156,7 +156,7 @@ module.exports = {
         
             const updatedPost = await post.save()
         
-            res.status(200).json(updatedPost)
+            res.status(200).json({ data: updatedPost })
         } catch (err) {
             res.status(409).json({ message: err.message })
         }
@@ -188,7 +188,7 @@ module.exports = {
       
           const updatedPost = await post.save();
       
-          res.status(200).json(updatedPost);
+          res.status(200).json({ data: updatedPost });
         } catch (err) {
           res.status(500).json({ message: err.message });
         }
