@@ -47,15 +47,20 @@ module.exports = {
                     }
                 })
             } else {
-                res.status(409).json({ message: err.message })
+                res.status(400).json("File gambar harus diisi!")
             }
         } catch (err) {
-            if(err && err.name === "ValidationError") {
+            if (err.name === "ValidationError") {
                 return res.status(422).json({
-                    error: 1,
-                    message: err.message,
-                    fields: err.errors
-                })
+                  error: 1,
+                  message: err.message,
+                  fields: err.errors
+                });
+            } else {
+                return res.status(500).json({
+                  error: 1,
+                  message: "Terjadi kesalahan server."
+                });
             }
         }
     },

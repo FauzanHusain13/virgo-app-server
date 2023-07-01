@@ -4,6 +4,15 @@ const User = require("./model")
 const { rootPath } = require("../../config")
 
 module.exports = {
+    getAllUser: async(req, res) => {
+        try {
+            const user = await User.find()
+    
+            res.status(200).json({ data: user })
+        } catch (err) {
+            res.status(500).json({ message: err.message || "Internal Server Error" })
+        }
+    },
     getUser: async(req, res) => {
         try {
             const { id } = req.params;

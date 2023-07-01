@@ -4,10 +4,15 @@ const { createPost, deletePost, getFeedPosts, getUserPost, likePost, commentPost
 const { isLoginUser } = require("../middleware/auth")
 
 const multer = require("multer")
-const upload = multer({ dest: '/public/uploads/post' })
+const upload = multer({ 
+    dest: '/public/uploads/post',
+    limits: {
+        fileSize: 10 * 1024 * 1024,
+    }
+})
 
 router.get("/", isLoginUser, getFeedPosts)
-router.post('/create', isLoginUser, upload.single("picturePath"), createPost)
+router.post('/create', upload.single("picturePath"), isLoginUser, createPost)
 router.delete('/:id/delete', isLoginUser, deletePost)
 
 router.get('/:id/posts', isLoginUser, getUserPost)
