@@ -105,7 +105,7 @@ module.exports = {
     getUserPost: async(req, res) => {
         try {
             const { userId } = req.params
-            const post = await Post.find({ userId })
+            const post = await Post.find({ user: userId }).populate("user")
 
             res.status(200).json({ data: post })
         } catch (err) {

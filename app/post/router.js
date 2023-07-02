@@ -15,7 +15,7 @@ router.get("/", isLoginUser, getFeedPosts)
 router.post('/create', upload.single("picturePath"), isLoginUser, createPost)
 router.delete('/:id/delete', isLoginUser, deletePost)
 
-router.get('/:id/posts', isLoginUser, getUserPost)
+router.get('/:userId/posts', getUserPost)
 router.patch('/:id/like', isLoginUser, likePost)
 router.post('/:id/comment', isLoginUser, commentPost)
 router.delete('/:id/comment', isLoginUser, commentDelete)
