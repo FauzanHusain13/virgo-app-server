@@ -37,6 +37,7 @@ module.exports = {
         User.findOne({ email }).then((user) => {
             if(user) {
                 const checkPassword = bcrypt.compareSync(password, user.password)
+                // const checkPassword = password === user.password
   
                 if (checkPassword) {
                     const token = jwt.sign({

@@ -35,8 +35,12 @@ let userSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 userSchema.pre("save", function(next) {
-    this.password = bcrypt.hashSync(this.password, HASH_ROUND)
-    next()
-})
+    if (!this.isModified("password")) {
+        return next(); // Lanjutkan jika password tidak berubah
+    }
+
+    this.password = bcrypt.hashSync(this.password, HASH_ROUND);
+    next();
+});
 
 module.exports = mongoose.model("User", userSchema)

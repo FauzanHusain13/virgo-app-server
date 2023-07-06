@@ -118,16 +118,16 @@ module.exports = {
     },
     addRemoveFriend: async(req, res) => {
         try {
-            const { id, friendId } = req.params;
-            const user = await User.findById(id)
+            const { friendId } = req.params;
+            const user = await User.findById(req.user._id)
             const friend = await User.findById(friendId)
     
             if(user.friends.includes(friendId)) {
                 user.friends = user.friends.filter((id) => id !== friendId)
-                friend.friends = friend.friends.filter((id) => id !== friendId)
+                friend.friends = friend.friends.filter((id) => id !== req.user._id)
             } else {
                 user.friends.push(friendId)
-                friend.friends.push(id)
+                friend.friends.push(req.user._id)
             }
             await user.save()
             await friend.save()
@@ -136,11 +136,11 @@ module.exports = {
                 user.friends.map((id) => User.findById(id))
             )
             const formattedFriends = friends.map(
-                ({ _id, username, occupation, location, picturePath }) => {
+                ({ _id, username, occupation, location, picturePath, }) => {
                     return { _id, username, occupation, location, picturePath }
                 }
             )
-    
+
             res.status(200).json({ data: formattedFriends })
         } catch (err) {
             res.status(500).json({ message: err.message || "Internal Server Error" })

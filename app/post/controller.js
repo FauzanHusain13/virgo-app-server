@@ -96,8 +96,14 @@ module.exports = {
     },
     getFeedPosts: async(req, res) => {
         try {
-            const post = await Post.find()
-            res.status(200).json({ data: post })
+            const { userId } = req.params;
+
+            const user = await User.findById(userId);
+            const friends = user.friends;
+        
+            const posts = await Post.find({ user: { $in: friends } }).populate('user');
+
+            res.status(200).json({ data: posts })
         } catch (err) {
             res.status(409).json({ message: err.message }) 
         }

@@ -10,6 +10,6 @@ router.get('/all', getAllUser)
 router.get('/:id', getUser)
 router.put('/edit', isLoginUser, upload.single("profilePath"), editProfile)
 router.get("/:id/friends", isLoginUser, getFriends)
-router.patch("/:id/:friendId", isLoginUser, addRemoveFriend)
+router.patch("/:friendId", isLoginUser, addRemoveFriend)
 
 module.exports = router;

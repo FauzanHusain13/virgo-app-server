@@ -11,7 +11,7 @@ const upload = multer({
     }
 })
 
-router.get("/", isLoginUser, getFeedPosts)
+router.get("/:userId/feed", getFeedPosts)
 router.post('/create', upload.single("picturePath"), isLoginUser, createPost)
 router.delete('/:id/delete', isLoginUser, deletePost)
 

@@ -1,6 +1,6 @@
-const { jwtkey } = require("../../config")
 const jwt = require("jsonwebtoken")
 const User = require("../user/model")
+const { jwtkey } = require("../../config")
 
 module.exports = {
     isLoginUser: async(req, res, next) => {
