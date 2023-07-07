@@ -36,7 +36,7 @@ let userSchema = new mongoose.Schema({
 
 userSchema.pre("save", function(next) {
     if (!this.isModified("password")) {
-        return next(); // Lanjutkan jika password tidak berubah
+        return next()
     }
 
     this.password = bcrypt.hashSync(this.password, HASH_ROUND);

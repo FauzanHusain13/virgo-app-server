@@ -122,9 +122,9 @@ module.exports = {
             const user = await User.findById(req.user._id)
             const friend = await User.findById(friendId)
     
-            if(user.friends.includes(friendId)) {
-                user.friends = user.friends.filter((id) => id !== friendId)
-                friend.friends = friend.friends.filter((id) => id !== req.user._id)
+            if(friend.friends.includes(req.user._id)) {
+                user.friends = user.friends.filter((id) => id.toString() !== friendId.toString())
+                friend.friends = friend.friends.filter((id) => id.toString() !== req.user._id.toString())
             } else {
                 user.friends.push(friendId)
                 friend.friends.push(req.user._id)
