@@ -23,6 +23,7 @@ let userSchema = new mongoose.Schema({
     },
     profilePath: {
         type: String,
+        default: "default-profile.jpg",
     },
     friends: {
         type: Array,
