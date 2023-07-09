@@ -118,6 +118,17 @@ module.exports = {
             res.status(409).json({ message: err.message })
         }
     },
+    getDetailPost: async(req, res) => {
+        try {
+            const { id } = req.params
+
+            const post = await Post.findById(id)
+
+            res.status(200).json({ data: post })
+        } catch (err) {
+            res.status(409).json({ message: err.message })
+        }
+    },
     likePost: async(req, res) => {
         try {
             const { id } = req.params
@@ -160,9 +171,10 @@ module.exports = {
             }
         
             post.comments.push({
-                _id: Math.random(8),
+                _id: req.user._id,
                 comment: comment,
-                user: req.user._id
+                username: req.user.username,
+                profilePath: req.user.profilePath
             })
         
             const updatedPost = await post.save()
