@@ -6,6 +6,38 @@ const fs = require("fs")
 const { rootPath } = require("../../config")
 
 module.exports = {
+    getTrendingPost: async(req, res) => {
+        try {
+            const post = await Post.findOne().sort({ likes: -1 })
+            res.status(200).json(post);
+        } catch (err) {
+            res.status(409).json({ message: err.message })
+        }
+    },
+    getFeedPosts: async(req, res) => {
+        try {
+            const { userId } = req.params;
+
+            const user = await User.findById(userId);
+            const friends = user.friends;
+        
+            const posts = await Post.find({ user: { $in: friends } }).populate('user');
+
+            res.status(200).json({ data: posts })
+        } catch (err) {
+            res.status(409).json({ message: err.message }) 
+        }
+    },
+    getUserPost: async(req, res) => {
+        try {
+            const { userId } = req.params
+            const post = await Post.find({ user: userId }).populate("user")
+
+            res.status(200).json({ data: post })
+        } catch (err) {
+            res.status(409).json({ message: err.message })
+        }
+    },
     createPost: async(req, res) => {
         try {
             const { description } = req.body;
@@ -94,35 +126,12 @@ module.exports = {
             res.status(409).json({ message: err.message })
         }
     },
-    getFeedPosts: async(req, res) => {
-        try {
-            const { userId } = req.params;
-
-            const user = await User.findById(userId);
-            const friends = user.friends;
-        
-            const posts = await Post.find({ user: { $in: friends } }).populate('user');
-
-            res.status(200).json({ data: posts })
-        } catch (err) {
-            res.status(409).json({ message: err.message }) 
-        }
-    },
-    getUserPost: async(req, res) => {
-        try {
-            const { userId } = req.params
-            const post = await Post.find({ user: userId }).populate("user")
-
-            res.status(200).json({ data: post })
-        } catch (err) {
-            res.status(409).json({ message: err.message })
-        }
-    },
     getDetailPost: async(req, res) => {
         try {
             const { id } = req.params
 
             const post = await Post.findById(id)
+            await post.save()
 
             res.status(200).json({ data: post })
         } catch (err) {

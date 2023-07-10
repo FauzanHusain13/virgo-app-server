@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-const { createPost, deletePost, getFeedPosts, getUserPost, likePost, commentPost, commentDelete, getDetailPost } = require("./controller")
+const { createPost, deletePost, getFeedPosts, getUserPost, getTrendingPost, likePost, commentPost, commentDelete, getDetailPost } = require("./controller")
 const { isLoginUser } = require("../middleware/auth")
 
 const multer = require("multer")
@@ -11,6 +11,7 @@ const upload = multer({
     }
 })
 
+router.get("/", getTrendingPost)
 router.get("/:userId/feed", getFeedPosts)
 router.get('/:userId/posts', getUserPost)
 router.get('/:id/post', getDetailPost)
