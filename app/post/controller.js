@@ -8,8 +8,9 @@ const { rootPath } = require("../../config")
 module.exports = {
     getTrendingPost: async(req, res) => {
         try {
-            const post = await Post.findOne().sort({ likes: -1 })
-            res.status(200).json(post);
+            const post = await Post.find().sort({ likes: -1 }).populate("user")
+            
+            res.status(200).json({ data: post });
         } catch (err) {
             res.status(409).json({ message: err.message })
         }
