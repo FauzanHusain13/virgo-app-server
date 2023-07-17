@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-const { getAllUser, getUser, editProfile, getFriends, addRemoveFriend } = require("./controller")
+const { getAllUser, getUser, editProfile, getFriends, addRemoveFriend, searchUser } = require("./controller")
 const { isLoginUser } = require("../middleware/auth")
 
 const multer = require("multer")
@@ -11,5 +11,6 @@ router.get('/:id', getUser)
 router.put('/edit', isLoginUser, upload.single("profilePath"), editProfile)
 router.get("/:id/friends", isLoginUser, getFriends)
 router.patch("/:friendId", isLoginUser, addRemoveFriend)
+router.post("/search", isLoginUser, searchUser)
 
 module.exports = router;

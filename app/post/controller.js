@@ -174,14 +174,15 @@ module.exports = {
             const { id } = req.params
             const { comment } = req.body
         
-            const post = await Post.findById(id)
+            const post = await Post.findById(id).populate("user")
         
             if (!post) {
               return res.status(404).json({ message: "Post not found" })
             }
         
             post.comments.push({
-                _id: req.user._id,
+                _id: Math.random(),
+                user: req.user._id,
                 comment: comment,
                 username: req.user.username,
                 profilePath: req.user.profilePath
