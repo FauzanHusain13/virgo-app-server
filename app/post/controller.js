@@ -131,7 +131,7 @@ module.exports = {
         try {
             const { id } = req.params
 
-            const post = await Post.findById(id)
+            const post = await Post.findById(id).populate("comments.user")
             await post.save()
 
             res.status(200).json({ data: post })
@@ -181,11 +181,8 @@ module.exports = {
             }
         
             post.comments.push({
-                _id: Math.random(),
                 user: req.user._id,
-                comment: comment,
-                username: req.user.username,
-                profilePath: req.user.profilePath
+                comment: comment
             })
         
             const updatedPost = await post.save()
