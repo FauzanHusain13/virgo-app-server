@@ -22,6 +22,6 @@ router.delete('/:id/delete', isLoginUser, deletePost)
 router.patch('/:id/like', isLoginUser, likePost)
 
 router.post('/:id/comment', isLoginUser, commentPost)
-router.delete('/:id/comment', isLoginUser, commentDelete)
+router.delete('/:id/:commentId/comment', isLoginUser, commentDelete)
 
 module.exports = router;
