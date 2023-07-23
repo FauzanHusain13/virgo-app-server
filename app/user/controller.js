@@ -126,8 +126,8 @@ module.exports = {
                 user.friends = user.friends.filter((id) => id.toString() !== friendId.toString())
                 friend.friends = friend.friends.filter((id) => id.toString() !== req.user._id.toString())
             } else {
-                user.friends.push(friendId)
-                friend.friends.push(req.user._id)
+                user.friends.push(friendId.toString())
+                friend.friends.push(req.user._id.toString())
             }
             await user.save()
             await friend.save()
