@@ -11,7 +11,6 @@ const authRouter = require("./app/auth/router")
 const userRouter = require("./app/user/router")
 const postRouter = require("./app/post/router")
 
-
 const app = express();
 app.use(cors())
 const URL = "/api/v1";

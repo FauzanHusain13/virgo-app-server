@@ -29,6 +29,10 @@ let userSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    story: {
+        type: String,
+        default: ""
+    },
     location: { type: String },
     occupation: { type: String },
     viewedProfile: { type: Number },

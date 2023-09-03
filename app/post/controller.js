@@ -225,9 +225,65 @@ module.exports = {
     },
     postStory: async(req, res) => {
         try {
-            
+            if(req.file) {
+                let tmp_path = req.file.path;
+                let originalExt = req.file.originalname.split(".")[req.file.originalname.split(".").length - 1];
+                let filename = req.file.filename + "." + originalExt;
+                let target_path = path.resolve(rootPath, `public/uploads/story/${filename}`);
+
+                const src = fs.createReadStream(tmp_path);
+                const dest = fs.createWriteStream(target_path);
+
+                src.pipe(dest);
+
+                src.on("end", async() => {
+                    let user = await User.findOne({ _id: req.user.id })
+
+                    user = await User.findOneAndUpdate({
+                        _id: req.user._id
+                    },{
+                        story: filename
+                    }, { new: true, runValidators: true })
+
+                    res.status(201).json({
+                        data: {
+                            id: user.id,
+                            story: user.story
+                        }
+                    })
+                })
+
+                src.on("err", async() => {
+                    next(err)
+                })
+
+                setTimeout(async function() {
+                    await User.updateOne({
+                        _id: req.user._id
+                    }, { $unset: { story: 1 } })
+    
+                    let currentImage = `${rootPath}/public/uploads/story/${filename}`;
+                
+                    if(fs.existsSync(currentImage)){
+                        fs.unlinkSync(currentImage)
+                    }
+                }, 86400000)
+            } else {
+                res.status(400).json("File gambar harus diisi!")
+            }
         } catch (err) {
-            res.status(409).json({ message: err.message }) 
+            if (err.name === "ValidationError") {
+                return res.status(422).json({
+                  error: 1,
+                  message: err.message,
+                  fields: err.errors
+                });
+            } else {
+                return res.status(500).json({
+                  error: 1,
+                  message: "Terjadi kesalahan server."
+                });
+            }
         }
     }
 }

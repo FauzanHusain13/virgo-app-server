@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-const { createPost, deletePost, getFeedPosts, getUserPost, getTrendingPost, likePost, commentPost, commentDelete, getDetailPost } = require("./controller")
+const { createPost, deletePost, getFeedPosts, getUserPost, getTrendingPost, likePost, commentPost, commentDelete, getDetailPost, postStory } = require("./controller")
 const { isLoginUser } = require("../middleware/auth")
 
 const multer = require("multer")
@@ -23,5 +23,7 @@ router.patch('/:id/like', isLoginUser, likePost)
 
 router.post('/:id/comment', isLoginUser, commentPost)
 router.delete('/:id/:commentId/comment', isLoginUser, commentDelete)
+
+router.post('/story', upload.single("story"), isLoginUser, postStory)
 
 module.exports = router;
